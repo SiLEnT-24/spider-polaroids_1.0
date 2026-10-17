@@ -114,17 +114,14 @@
         useCORS: true,
         scale: 1
       });
-      const blob = await new Promise((resolve, reject) => {
-        canvas.toBlob(result => result ? resolve(result) : reject(new Error('PNG export failed.')), 'image/png');
-      });
-      const url = URL.createObjectURL(blob);
+      const dataUrl = canvas.toDataURL('image/png');
+      if (dataUrl === 'data:,') throw new Error('PNG export failed.');
       const download = document.createElement('a');
-      download.href = url;
+      download.href = dataUrl;
       download.download = 'web-of-memories-screenshot.png';
       document.body.appendChild(download);
       download.click();
       download.remove();
-      setTimeout(() => URL.revokeObjectURL(url), 1000);
     } catch (error) {
       console.error('Screenshot download failed:', error);
       alert('Could not download the screenshot. Please try again.');
