@@ -16,12 +16,15 @@ button{font:inherit;cursor:pointer}
 body.fx #dot,body.fx #trail{display:block}
 
 .bar{position:fixed;top:8px;left:50%;transform:translateX(-50%);z-index:40;display:flex;gap:6px;padding:6px 10px;background:#140b0bcc;border:1px solid #4a1d1d;border-radius:30px}
-.bar button{background:#2a1111;color:var(--paper);border:1px solid #5a2222;border-radius:20px;padding:5px 12px;font-size:.8rem}
-.bar button:hover{background:#7a1b1b}
-
+.bar button,.bar a{background:#2a1111;color:var(--paper);border:1px solid #5a2222;border-radius:20px;padding:5px 12px;font-size:.8rem}
+.bar a{text-decoration:none}
+.bar button:hover,.bar a:hover{background:#7a1b1b}
+@media(max-width:420px){
+	.bar{gap:4px;padding:5px 7px}
+	.bar button,.bar a{padding:4px 7px;font-size:.68rem}
+}
 /* 3D scene: layers sit at different translateZ so they parallax */
-.scene{perspective:1400px;width:var(--W);margin:0 auto;overflow:hidden;animation:in 1.2s ease both}
-@keyframes in{from{opacity:0}}
+.scene{perspective:1400px;width:var(--W);margin:0 auto;overflow:hidden}
 .stage{position:relative;width:100%;aspect-ratio:1152/2048;transform-style:preserve-3d;transform:rotateX(var(--sx,0deg)) rotateY(var(--sy,0deg))}
 .bg{position:absolute;inset:0;background:url(assets/scene.png) center/100% 100%,#000;transform:translateZ(-60px) scale(1.043)}
 .bg::after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 50% 45%,transparent 50%,#000a 100%)}
@@ -33,9 +36,9 @@ body.bright .bg{filter:brightness(1.7)}
 /* photo frames */
 .frame{z-index:2;left:calc(var(--x)/1152*100%);top:calc(var(--y)/2048*100%);width:calc(var(--w)/1152*100%);height:calc(var(--h)/2048*100%);
  transform:translateZ(calc(20px + var(--lift,0px))) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) scale(.9857);
- transition:transform .5s cubic-bezier(.34,1.56,.64,1),filter .3s;animation:pop .9s both,float 7s ease-in-out infinite}
+ transition:transform .5s cubic-bezier(.34,1.56,.64,1),filter .3s;animation:pop .9s,float 7s ease-in-out infinite}
 .frame:nth-of-type(2){animation-delay:.2s,-3s}
-@keyframes pop{from{opacity:0;scale:.9}}
+@keyframes pop{from{scale:.9}}
 @keyframes float{50%{translate:0 -7px}}
 .frame:hover,.frame:focus-within{--lift:18px;z-index:6;filter:drop-shadow(0 22px 22px #000) drop-shadow(0 0 22px #a0222266)}
 .slot{position:absolute;inset:0;width:100%;height:100%;padding:0;border:0;background:transparent;color:var(--paper);overflow:hidden}
@@ -105,3 +108,9 @@ body.bright .bg{filter:brightness(1.7)}
 .dl{position:absolute;bottom:16px;left:50%;translate:-50% 0;color:#fff;background:#7a1b1b;padding:8px 16px;border-radius:20px;text-decoration:none}
 .help{text-align:center;font-size:.8rem;opacity:.55;margin:10px 12px 24px}
 @media (prefers-reduced-motion:reduce){*,*::after{animation:none!important;transition:none!important}}
+@media(max-width:480px){
+	.stage .player{left:25%;width:50%;padding:calc(var(--W)/40);gap:calc(var(--W)/90)}
+	.ctl{gap:4px}
+	.tools button{width:32px;height:32px}
+}
+@media(hover:none){.frame.has .tools{display:flex}}

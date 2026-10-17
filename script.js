@@ -96,6 +96,45 @@
   });
 
   /* ---------- Toolbar ---------- */
+  const screenshotsLink = $('.bar a[href="#screenshots"]');
+  let screenshotInProgress = false;
+  screenshotsLink.onclick = async event => {
+    event.preventDefault();
+    if (screenshotInProgress) return;
+    screenshotInProgress = true;
+    screenshotsLink.setAttribute('aria-busy', 'true');
+    try {
+      if (typeof html2canvas !== 'function') throw new Error('Screenshot renderer is unavailable.');
+      window.scrollTo(0, 0);
+      const canvas = await html2canvas(document.body, {
+        backgroundColor: '#050303',
+        height: document.documentElement.scrollHeight,
+        windowHeight: document.documentElement.scrollHeight,
+        scrollY: 0,
+        useCORS: true,
+        scale: 1
+      });
+      const blob = await new Promise((resolve, reject) => {
+        canvas.toBlob(result => result ? resolve(result) : reject(new Error('PNG export failed.')), 'image/png');
+      });
+      const url = URL.createObjectURL(blob);
+      const download = document.createElement('a');
+      download.href = url;
+      download.download = 'web-of-memories-screenshot.png';
+      document.body.appendChild(download);
+      download.click();
+      download.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+    } catch (error) {
+      console.error('Screenshot download failed:', error);
+      alert('Could not download the screenshot. Please try again.');
+    } finally {
+      screenshotInProgress = false;
+      screenshotsLink.removeAttribute('aria-busy');
+      history.replaceState(null, '', '#screenshots');
+      $('#screenshots').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
   $('#modeBtn').onclick = () => document.body.classList.toggle('bright');
   $('#resetBtn').onclick = () => { if (confirm('Remove all photos and captions?')) items.forEach((_, i) => clearPhoto(i)); };
 

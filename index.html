@@ -11,6 +11,7 @@
 <div id="trail" aria-hidden="true"></div><div id="dot" aria-hidden="true"></div>
 
 <header class="bar">
+  <a href="#screenshots">Screenshots</a>
   <button id="modeBtn" title="Cinematic / bright mode">◐ Mode</button>
   <button id="resetBtn" title="Remove all photos">Reset</button>
 </header>
@@ -27,7 +28,7 @@
     <input class="cap" maxlength="40" placeholder="Add a caption…" aria-label="Caption for frame 1">
     <div class="tools"><button data-a="replace" aria-label="Replace photo">↻</button><button data-a="dl" aria-label="Download photo">⬇</button><button data-a="rm" aria-label="Remove photo">✕</button></div>
   </figure>
-  <figure class="frame" data-i="1" style="--x:580;--y:1262;--w:523;--h:536;--capw:44%">
+  <figure class="frame" id="screenshots" data-i="1" style="--x:580;--y:1262;--w:523;--h:536;--capw:44%">
     <button class="slot" aria-label="Add photo to frame 2"><span class="add">+ Add Photo<small>click or drop an image</small></span></button>
     <input class="cap" maxlength="40" placeholder="Add a caption…" aria-label="Caption for frame 2">
     <div class="tools"><button data-a="replace" aria-label="Replace photo">↻</button><button data-a="dl" aria-label="Download photo">⬇</button><button data-a="rm" aria-label="Remove photo">✕</button></div>
@@ -67,6 +68,7 @@
   <a id="bigDl" class="dl" download="photo.jpg">⬇ Download</a>
 </div>
 <input type="file" id="file" accept="image/jpeg,image/png,image/webp" hidden>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" referrerpolicy="no-referrer"></script>
 <script src="script.js"></script>
 </body>
 </html>
