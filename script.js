@@ -106,6 +106,7 @@
     try {
       if (typeof html2canvas !== 'function') throw new Error('Screenshot renderer is unavailable.');
       window.scrollTo(0, 0);
+      document.body.classList.add('capturing');
       const canvas = await html2canvas(document.body, {
         backgroundColor: '#050303',
         height: document.documentElement.scrollHeight,
@@ -114,18 +115,22 @@
         useCORS: true,
         scale: 1
       });
-      const dataUrl = canvas.toDataURL('image/png');
-      if (dataUrl === 'data:,') throw new Error('PNG export failed.');
+      const blob = await new Promise((resolve, reject) => {
+        canvas.toBlob(result => result ? resolve(result) : reject(new Error('PNG export failed.')), 'image/png');
+      });
+      const url = URL.createObjectURL(blob);
       const download = document.createElement('a');
-      download.href = dataUrl;
+      download.href = url;
       download.download = 'web-of-memories-screenshot.png';
       document.body.appendChild(download);
       download.click();
       download.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 60000);
     } catch (error) {
       console.error('Screenshot download failed:', error);
       alert('Could not download the screenshot. Please try again.');
     } finally {
+      document.body.classList.remove('capturing');
       screenshotInProgress = false;
       screenshotsLink.removeAttribute('aria-busy');
       history.replaceState(null, '', '#screenshots');

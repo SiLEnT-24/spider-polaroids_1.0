@@ -4,6 +4,7 @@ html,body{margin:0;background:#050303;color:var(--paper);font-family:system-ui,s
 body{background:radial-gradient(ellipse at 50% 30%,#2a1212,#050303 70%) fixed;min-height:100vh}
 body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:30;opacity:.08;mix-blend-mode:overlay;
  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");animation:grain .8s steps(4) infinite}
+body.capturing::after{display:none!important}
 @keyframes grain{50%{background-position:40px 20px}}
 #fx{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:20}
 :focus-visible{outline:2px solid #ff6a5a;outline-offset:2px}
