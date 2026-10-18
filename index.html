@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Web of Memories – 3D Polaroid Gallery</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#050303">
+<title>Web of Memories Polaroid Gallery</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -27,12 +27,12 @@
   <figure class="frame" data-i="0" style="--x:44;--y:45;--w:510;--h:523">
     <button class="slot" aria-label="Add photo to frame 1"><span class="add">+ Add Photo<small>click or drop an image</small></span></button>
     <input class="cap" maxlength="40" placeholder="Add a caption…" aria-label="Caption for frame 1">
-    <div class="tools"><button data-a="replace" aria-label="Replace photo">↻</button><button data-a="dl" aria-label="Download photo">⬇</button><button data-a="rm" aria-label="Remove photo">✕</button></div>
+    <div class="tools"><button data-a="swap" aria-label="Swap photos">⇄</button><button data-a="replace" aria-label="Replace photo">↻</button><button data-a="dl" aria-label="Download photo">⬇</button><button data-a="rm" aria-label="Remove photo">✕</button></div>
   </figure>
   <figure class="frame" data-i="1" style="--x:580;--y:1262;--w:523;--h:536;--capw:44%">
     <button class="slot" aria-label="Add photo to frame 2"><span class="add">+ Add Photo<small>click or drop an image</small></span></button>
     <input class="cap" maxlength="40" placeholder="Add a caption…" aria-label="Caption for frame 2">
-    <div class="tools"><button data-a="replace" aria-label="Replace photo">↻</button><button data-a="dl" aria-label="Download photo">⬇</button><button data-a="rm" aria-label="Remove photo">✕</button></div>
+    <div class="tools"><button data-a="swap" aria-label="Swap photos">⇄</button><button data-a="replace" aria-label="Replace photo">↻</button><button data-a="dl" aria-label="Download photo">⬇</button><button data-a="rm" aria-label="Remove photo">✕</button></div>
   </figure>
 
   <section class="player" id="player" aria-label="Music player">
@@ -59,7 +59,7 @@
 </main>
 </div>
 
-<p class="help">Click a frame or drop a JPG / PNG / WebP on it · drag one photo onto the other frame to swap · move near the spider.</p>
+<p class="help">Tap or click a frame to add a photo (or drop one on it) · ⇄ swaps the photos · swipe in the preview · tap near the spider.</p>
 
 <div id="modal" hidden role="dialog" aria-modal="true" aria-label="Photo preview">
   <button id="prev" aria-label="Previous photo">‹</button>

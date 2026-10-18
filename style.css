@@ -105,3 +105,30 @@ body.bright .bg{filter:brightness(1.7)}
 .dl{position:absolute;bottom:16px;left:50%;translate:-50% 0;color:#fff;background:#7a1b1b;padding:8px 16px;border-radius:20px;text-decoration:none}
 .help{text-align:center;font-size:.8rem;opacity:.55;margin:10px 12px 24px}
 @media (prefers-reduced-motion:reduce){*,*::after{animation:none!important;transition:none!important}}
+
+/* ---------- mobile / touch ---------- */
+body{padding-top:54px}
+.bar{top:calc(8px + env(safe-area-inset-top))}
+button{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+@media (hover:none){
+ .frame.has .tools{display:flex;top:6px;right:6px}
+ .tools button{width:36px;height:36px;font-size:1rem}
+ .cap{font-size:16px}
+}
+.player.dock{position:fixed;z-index:45;left:50%;top:auto;bottom:calc(10px + env(safe-area-inset-bottom));width:min(94vw,440px);height:auto;
+ flex-direction:row;flex-wrap:wrap;align-items:center;gap:8px 12px;padding:12px 14px;transform:translateX(-50%)}
+.dock .art,.dock .volrow{display:none}
+.dock .ctl{order:1;gap:10px}
+.dock .meta{order:2;flex:1;text-align:left;font-size:.95rem;min-width:0}
+.dock #seek{order:3;flex-basis:100%}
+.dock .addsong{order:4;flex-basis:100%;font-size:.72rem;padding:2px 0}
+.dock .gbtn{width:46px;height:46px}.dock .gbtn.big{width:54px;height:54px}
+@media (max-width:600px){
+ body{padding-bottom:150px}
+ .bar{gap:4px;padding:5px 8px}.bar button{font-size:.7rem;padding:5px 8px}
+ .frame{animation:pop .9s both}
+ #modal{flex-wrap:wrap;padding:8px}
+ #prev,#next{position:absolute;bottom:18px}#prev{left:16px}#next{right:16px}
+ #big{max-width:92vw;max-height:70vh;max-height:70dvh;border-width:8px 8px 34px}
+ #bigCap{margin-top:-28px}
+}

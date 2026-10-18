@@ -52,6 +52,7 @@
     $('.tools', f).onclick = e => {
       const a = e.target.dataset.a; if (!a) return;
       if (a === 'replace') pick(i);
+      if (a === 'swap') { const j = (i + 1) % frames.length; [items[i], items[j]] = [items[j], items[i]]; render(i); render(j); save(i); save(j); }
       if (a === 'rm') clearPhoto(i);
       if (a === 'dl') download(i);
     };
@@ -94,6 +95,10 @@
     if (e.key === 'ArrowLeft') step(-1);
     if (e.key === 'ArrowRight') step(1);
   });
+
+  let swx = null;                                   // swipe left/right in the preview
+  modal.addEventListener('touchstart', e => swx = e.touches[0].clientX, { passive: true });
+  modal.addEventListener('touchend', e => { if (swx == null) return; const d = e.changedTouches[0].clientX - swx; swx = null; if (Math.abs(d) > 50) step(d < 0 ? 1 : -1); });
 
   /* ---------- Toolbar ---------- */
   $('#modeBtn').onclick = () => document.body.classList.toggle('bright');
@@ -145,6 +150,9 @@
     mx = e.clientX; my = e.clientY; nx = mx / innerWidth - .5; ny = my / innerHeight - .5; lastMove = performance.now();
   });
   const pl = $('#player');
+  const mobileMQ = matchMedia('(max-width: 600px)');   // on phones the player docks to the bottom of the screen
+  const dockIt = () => { pl.classList.toggle('dock', mobileMQ.matches); (mobileMQ.matches ? document.body : stage).appendChild(pl); };
+  dockIt(); mobileMQ.addEventListener('change', dockIt);
   pl.addEventListener('pointermove', e => {
     const r = pl.getBoundingClientRect(), x = (e.clientX - r.left) / r.width - .5, y = (e.clientY - r.top) / r.height - .5;
     pl.style.setProperty('--ry', x * 10 + 'deg'); pl.style.setProperty('--rx', -y * 10 + 'deg');
@@ -196,7 +204,7 @@
   addEventListener('pointerdown', e => {                       // touch: tap near the spider
     if (e.pointerType !== 'touch') return;
     const r = spEl.getBoundingClientRect();
-    if (Math.hypot(e.clientX - (r.left + r.width / 2), e.clientY - (r.top + r.height / 2)) < r.width * 1.1) boost = performance.now() + 1600;
+    if (Math.hypot(e.clientX - (r.left + r.width / 2), e.clientY - (r.top + r.height / 2)) < r.width * 2) boost = performance.now() + 1600;
   });
   requestAnimationFrame(tick);
 
