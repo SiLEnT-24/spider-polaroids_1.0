@@ -2,9 +2,8 @@
 *{box-sizing:border-box}
 html,body{margin:0;background:#050303;color:var(--paper);font-family:system-ui,sans-serif;overflow-x:hidden}
 body{background:radial-gradient(ellipse at 50% 30%,#2a1212,#050303 70%) fixed;min-height:100vh}
-body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:30;opacity:.08;mix-blend-mode:overlay;
- background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");animation:grain .8s steps(4) infinite}
-body.capturing::after{display:none!important}
+body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:30;opacity:.05;
+ background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E")}
 @keyframes grain{50%{background-position:40px 20px}}
 #fx{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:20}
 :focus-visible{outline:2px solid #ff6a5a;outline-offset:2px}
@@ -17,19 +16,16 @@ button{font:inherit;cursor:pointer}
 body.fx #dot,body.fx #trail{display:block}
 
 .bar{position:fixed;top:8px;left:50%;transform:translateX(-50%);z-index:40;display:flex;gap:6px;padding:6px 10px;background:#140b0bcc;border:1px solid #4a1d1d;border-radius:30px}
-.bar button,.bar a{background:#2a1111;color:var(--paper);border:1px solid #5a2222;border-radius:20px;padding:5px 12px;font-size:.8rem}
-.bar a{text-decoration:none}
-.bar button:hover,.bar a:hover{background:#7a1b1b}
-@media(max-width:420px){
-	.bar{gap:4px;padding:5px 7px}
-	.bar button,.bar a{padding:4px 7px;font-size:.68rem}
-}
+.bar button{background:#2a1111;color:var(--paper);border:1px solid #5a2222;border-radius:20px;padding:5px 12px;font-size:.8rem}
+.bar button:hover{background:#7a1b1b}
+
 /* 3D scene: layers sit at different translateZ so they parallax */
-.scene{perspective:1400px;width:var(--W);margin:0 auto;overflow:hidden}
+.scene{perspective:1400px;width:var(--W);margin:0 auto;overflow:hidden;animation:in 1.2s ease both}
+@keyframes in{from{opacity:0}}
 .stage{position:relative;width:100%;aspect-ratio:1152/2048;transform-style:preserve-3d;transform:rotateX(var(--sx,0deg)) rotateY(var(--sy,0deg))}
-.bg{position:absolute;inset:0;background:url(assets/scene.png) center/100% 100%,#000;transform:translateZ(-60px) scale(1.043)}
+.bg{position:absolute;inset:0;will-change:transform;background:url(assets/scene.webp) center/100% 100%,#000;transform:translateZ(-60px) scale(1.043)}
 .bg::after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 50% 45%,transparent 50%,#000a 100%)}
-.silk{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;transform:translateZ(-25px) scale(1.018);fill:none;stroke:#ffffff55;stroke-width:1.3;stroke-dasharray:7 11;animation:dash 14s linear infinite}
+.silk{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;transform:translateZ(-25px) scale(1.018);fill:none;stroke:#ffffff55;stroke-width:1.3;stroke-dasharray:7 11}
 @keyframes dash{to{stroke-dashoffset:-180}}
 .frame,.player,.spider{position:absolute;margin:0}
 body.bright .bg{filter:brightness(1.7)}
@@ -37,11 +33,11 @@ body.bright .bg{filter:brightness(1.7)}
 /* photo frames */
 .frame{z-index:2;left:calc(var(--x)/1152*100%);top:calc(var(--y)/2048*100%);width:calc(var(--w)/1152*100%);height:calc(var(--h)/2048*100%);
  transform:translateZ(calc(20px + var(--lift,0px))) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) scale(.9857);
- transition:transform .5s cubic-bezier(.34,1.56,.64,1),filter .3s;animation:pop .9s,float 7s ease-in-out infinite}
+ transition:transform .5s cubic-bezier(.34,1.56,.64,1),box-shadow .3s;will-change:transform;animation:pop .9s both,float 7s ease-in-out infinite}
 .frame:nth-of-type(2){animation-delay:.2s,-3s}
-@keyframes pop{from{scale:.9}}
+@keyframes pop{from{opacity:0;scale:.9}}
 @keyframes float{50%{translate:0 -7px}}
-.frame:hover,.frame:focus-within{--lift:18px;z-index:6;filter:drop-shadow(0 22px 22px #000) drop-shadow(0 0 22px #a0222266)}
+.frame:hover,.frame:focus-within{--lift:18px;z-index:6;box-shadow:0 22px 30px #000a,0 0 22px #a0222266}
 .slot{position:absolute;inset:0;width:100%;height:100%;padding:0;border:0;background:transparent;color:var(--paper);overflow:hidden}
 .slot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .slot::after{content:"";position:absolute;inset:0;pointer-events:none;opacity:.55;transition:opacity .3s;
@@ -68,7 +64,7 @@ body.bright .bg{filter:brightness(1.7)}
  backdrop-filter:blur(18px) saturate(140%);-webkit-backdrop-filter:blur(18px) saturate(140%);
  border:1px solid rgba(255,255,255,.18);
  box-shadow:0 30px 50px rgba(0,0,0,.6),0 0 25px rgba(160,20,35,.3),inset 0 1px 1px rgba(255,255,255,.2);
- transform:translateZ(56px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));transition:transform .5s cubic-bezier(.34,1.56,.64,1),box-shadow .5s;animation:float 8s ease-in-out infinite}
+ transform:translateZ(56px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));transition:transform .5s cubic-bezier(.34,1.56,.64,1),box-shadow .5s;will-change:transform}
 @supports not (backdrop-filter:blur(1px)){.player{background:linear-gradient(135deg,#5a1822,#1c070c)}}
 .player::before{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;
  background:linear-gradient(115deg,#ffffff2e,transparent 32%),radial-gradient(circle at var(--gx,50%) var(--gy,0%),#ffffff1c,transparent 50%)}
@@ -80,7 +76,7 @@ body.bright .bg{filter:brightness(1.7)}
 .eq i:nth-child(2n){animation-duration:.7s}.eq i:nth-child(3n){animation-duration:1.3s;animation-delay:-.4s}
 .player.playing .eq i{animation-play-state:running}
 @keyframes bar{50%{height:100%}}
-.meta{display:grid;min-width:0;text-align:center;font-size:calc(var(--W)/32)}.meta b{overflow-wrap:anywhere}.meta small{opacity:.6;font-size:.7em}
+.meta{display:grid;text-align:center;font-size:calc(var(--W)/32)}.meta small{opacity:.6;font-size:.7em}
 .ctl{display:flex;justify-content:center;align-items:center;gap:calc(var(--W)/22)}
 .gbtn{width:calc(var(--W)/14);height:calc(var(--W)/14);min-width:38px;min-height:38px;border-radius:50%;color:#fff;border:1px solid #ffffff44;
  background:linear-gradient(#d8505f,#6d1522);box-shadow:inset 0 2px 3px #fff6,0 6px 12px #0009;transition:transform .2s}
@@ -109,9 +105,3 @@ body.bright .bg{filter:brightness(1.7)}
 .dl{position:absolute;bottom:16px;left:50%;translate:-50% 0;color:#fff;background:#7a1b1b;padding:8px 16px;border-radius:20px;text-decoration:none}
 .help{text-align:center;font-size:.8rem;opacity:.55;margin:10px 12px 24px}
 @media (prefers-reduced-motion:reduce){*,*::after{animation:none!important;transition:none!important}}
-@media(max-width:480px){
-	.stage .player{left:25%;width:50%;padding:calc(var(--W)/40);gap:calc(var(--W)/90)}
-	.ctl{gap:4px}
-	.tools button{width:32px;height:32px}
-}
-@media(hover:none){.frame.has .tools{display:flex}}
